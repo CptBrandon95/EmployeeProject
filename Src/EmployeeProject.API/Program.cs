@@ -1,4 +1,6 @@
 
+using EmployeeProject.Infrastructure.DbContext;
+
 namespace EmployeeProject
 {
     public class Program
@@ -8,6 +10,8 @@ namespace EmployeeProject
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            // Injecting our db context
+            builder.Services.AddDbContext<ApplicationDbContext>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,6 +25,17 @@ namespace EmployeeProject
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+
+            /*
+             * Ensures that our database is created
+             */
+
+            using(var scope=app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
             }
 
             app.UseHttpsRedirection();
