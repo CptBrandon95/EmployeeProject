@@ -1,5 +1,9 @@
 
+using EmployeeProject.Business.MappingRegister;
+using EmployeeProject.Common.Interface;
+using EmployeeProject.Common.Model;
 using EmployeeProject.Infrastructure.DbContext;
+using EmployeeProject.Infrastructure.GenericRepos;
 
 namespace EmployeeProject
 {
@@ -11,7 +15,9 @@ namespace EmployeeProject
 
             // Add services to the container.
             // Injecting our db context
+            DIConfiguration.RegisterServices(builder.Services);
             builder.Services.AddDbContext<ApplicationDbContext>();
+            builder.Services.AddScoped<IGenericRepository<Address>, GenericRepository<Address>>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
